@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Главная страница</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #f4f4f4;
+      --text: #000;
+      --header: #002f34;
+      --card: #fff;
+    }
+
+    body.dark {
+      --bg: #1e1e1e;
+      --text: #fff;
+      --header: #111;
+      --card: #2a2a2a;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      background-color: var(--header);
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav a, .theme-toggle {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid white;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .search-container {
+      background: var(--card);
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .search-container input {
+      width: 300px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      font-size: 14px;
+    }
+
+    .search-container button {
+      padding: 10px 20px;
+      background: var(--header);
+      border: none;
+      color: white;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+
+    .categories {
+      padding: 30px;
+      text-align: center;
+    }
+
+    .categories h2 {
+      margin-bottom: 30px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .category {
+      background: var(--card);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .category:hover {
+      transform: translateY(-5px);
+    }
+
+    .category img {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+    }
+
+    .category span {
+      font-size: 14px;
+    }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .search-container input {
+        width: 100%;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
+
+      .search-container button {
+        width: 100%;
+        border-radius: 5px;
+      }
+
+      .search-container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MyMarket</div>
+  <nav>
+    <a href="profile.html">Профиль</a>
+    <a href="#" onclick="alert('Подача объявления')">Подать</a>
+    <a href="#" onclick="showFavorites()">Избранное</a>
+    <a href="#" onclick="showHistory()">История</a>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </nav>
+</header>
+
+<div class="search-container">
+  <input type="text" id="searchInput" placeholder="Поиск товаров, услуг..." />
+  <button onclick="alert('Поиск: ' + document.getElementById('searchInput').value)">Поиск</button>
+</div>
+
+<div class="categories">
+  <h2>Категории</h2>
+  <div class="category-grid" id="categoryGrid">
+    <div class="category" onclick="clickCategory('Транспорт')">
+      <img src="https://cdn-icons-png.flaticon.com/512/743/743007.png" />
+      <span>Транспорт</span>
+    </div>
+    <div class="category" onclick="clickCategory('Работа')">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135765.png" />
+      <span>Работа</span>
+    </div>
+    <div class="category" onclick="clickCategory('Услуги')">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" />
+      <span>Услуги</span>
+    </div>
+    <div class="category" onclick="clickCategory('Недвижимость')">
+      <img src="https://cdn-icons-png.flaticon.com/512/484/484167.png" />
+      <span>Недвижимость</span>
+    </div>
+    <div class="category" onclick="clickCategory('Электроника')">
+      <img src="https://cdn-icons-png.flaticon.com/512/1041/1041916.png" />
+      <span>Электроника</span>
+    </div>
+    <div class="category" onclick="clickCategory('Мода')">
+      <img src="https://cdn-icons-png.flaticon.com/512/892/892458.png" />
+      <span>Мода</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2025 MyMarket — Все права защищены
+</footer>
+
+<script>
+  // Тёмная/светлая тема
+  function toggleTheme() {
+    document.body.classList.toggle("dark");
+    localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+  }
+
+  if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+  }
+
+  // Избранное
+  function clickCategory(name) {
+    let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+    if (!favs.includes(name)) favs.push(name);
+    localStorage.setItem("favorites", JSON.stringify(favs));
+
+    let hist = JSON.parse(localStorage.getItem("history") || "[]");
+    hist.push({ name, time: new Date().toLocaleString() });
+    localStorage.setItem("history", JSON.stringify(hist));
+
+    alert("Открыта категория: " + name);
+  }
+
+  function showFavorites() {
+    const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+    alert("Избранные категории:\\n" + (favs.length ? favs.join("\\n") : "Нет избранных"));
+  }
+
+  function showHistory() {
+    const hist = JSON.parse(localStorage.getItem("history") || "[]");
+    let msg = hist.map(h => h.time + " — " + h.name).reverse().slice(0, 10).join("\\n");
+    alert("История действий:\\n" + (msg || "Пусто"));
+  }
+</script>
+
+</body>
+</html>

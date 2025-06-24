@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Восстановление пароля</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-box">
+      <h2 style="color:white;">Восстановление пароля</h2>
+
+      <form id="step1">
+        <input type="email" id="email" placeholder="Введите вашу почту" required />
+        <button class="btn" type="submit">Отправить код</button>
+      </form>
+
+      <form id="step2" class="hidden">
+        <input type="text" id="code" placeholder="Введите код из почты" required />
+        <button class="btn" type="submit">Проверить код</button>
+      </form>
+
+      <form id="step3" class="hidden">
+        <input type="password" id="newPass" placeholder="Новый пароль" required />
+        <input type="password" id="confirmPass" placeholder="Повторите пароль" required />
+        <button class="btn" type="submit">Сбросить пароль</button>
+      </form>
+
+      <p style="color:white; margin-top:10px;">Вернуться к <a href="index.html" style="color:yellow;">входу</a></p>
+    </div>
+  </div>
+
+  <script>
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
+    const step3 = document.getElementById("step3");
+
+    let generatedCode = "";
+
+    step1.onsubmit = function (e) {
+      e.preventDefault();
+      generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
+      alert("Отправлено! Код для сброса (тест): " + generatedCode);
+      step1.classList.add("hidden");
+      step2.classList.remove("hidden");
+    };
+
+    step2.onsubmit = function (e) {
+      e.preventDefault();
+      const codeInput = document.getElementById("code").value;
+      if (codeInput === generatedCode) {
+        alert("Код подтверждён!");
+        step2.classList.add("hidden");
+        step3.classList.remove("hidden");
+      } else {
+        alert("Неверный код");
+      }
+    };
+
+    step3.onsubmit = function (e) {
+      e.preventDefault();
+      const newPass = document.getElementById("newPass").value;
+      const confirmPass = document.getElementById("confirmPass").value;
+
+      if (newPass !== confirmPass) {
+        alert("Пароли не совпадают!");
+        return;
+      }
+
+      alert("Пароль успешно сброшен (симуляция)");
+      window.location.href = "index.html";
+    };
+  </script>
+</body>
+</html>
